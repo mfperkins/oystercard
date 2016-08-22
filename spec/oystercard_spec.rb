@@ -2,6 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
 let (:station) {double :station}
+let (:station2) {double :station2}
 
   describe '#initialize' do
     it 'should set a card to a default balance of 0' do
@@ -12,6 +13,11 @@ let (:station) {double :station}
       loaded_card = Oystercard.new(50)
       expect(loaded_card.balance).to eq 50
     end
+
+    it 'should have no journeys stored by default' do
+      expect(subject.journeys).to eq []
+    end
+
   end
 
   describe '#top_up' do
@@ -47,11 +53,19 @@ let (:station) {double :station}
     end
 
     it 'should reduce the balance by the mimimum fare' do
-      expect{subject.touch_out}.to change {subject.balance}.by -Oystercard::MIN_FARE
+      expect{subject.touch_out(station)}.to change {subject.balance}.by -Oystercard::MIN_FARE
     end
 
-    it 'should forget the entry station' do
-      expect{subject.touch_out}.to change {subject.entry_station}.to nil
+    it 'should create a hash of the journey and store it in the "journeys" variable' do
+      subject.touch_out(station2)
+      expect(subject.journeys).to include(station => station2)
+    end
+
+    it 'should create and store 2 journeys in the journey array when used 2x' do
+      subject.touch_out(station2)
+      subject.touch_in(station)
+      subject.touch_out(station2)
+      expect(subject.journeys.count).to eq 2
     end
   end
 end
