@@ -33,4 +33,19 @@ describe Oystercard do
     end
   end
 
+  describe '#touch_in' do
+
+    it 'should set the instance variable "in_journey" to true' do
+      expect{subject.touch_in}.to change {subject.in_journey }.to true
+    end
+
+  end
+
+  describe '#touch_out' do
+    it 'should set the instance variable "in_journey" to false' do
+      subject.touch_in
+      expect{subject.touch_out}.to change {subject.in_journey}.to false
+    end
+  end
+
 end
