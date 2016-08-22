@@ -25,14 +25,6 @@ describe Oystercard do
     end
   end
 
-  describe '#deduct' do
-
-    it 'should deduct the amount from the balance' do
-      subject.top_up(20)
-      expect{subject.deduct(10)}.to change{ subject.balance }.by -10
-    end
-  end
-
   describe '#touch_in' do
 
     it 'should set the instance variable "in_journey" to true' do
@@ -48,10 +40,17 @@ describe Oystercard do
 end
 
   describe '#touch_out' do
-    it 'should set the instance variable "in_journey" to false' do
+    before do
       subject.top_up(5)
       subject.touch_in
+    end
+
+    it 'should set the instance variable "in_journey" to false' do
       expect{subject.touch_out}.to change {subject.in_journey}.to false
+    end
+
+    it 'should reduce the balance by the mimimum fare' do
+      expect{subject.touch_out}.to change {subject.balance}.by -Oystercard::MIN_FARE
     end
   end
 
