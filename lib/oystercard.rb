@@ -18,7 +18,7 @@ class Oystercard
 
   def touch_in(station)
     fail "Your balance is below #{MIN_FARE}" if @balance < MIN_FARE
-    @entry_station = station
+    @journeys << {station => nil}
   end
 
   def touch_out(station)
