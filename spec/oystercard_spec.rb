@@ -39,11 +39,6 @@ let (:station2) {double :station2}
       msg = "Your balance is below #{min_fare}"
       expect{subject.touch_in(station)}.to raise_error(msg)
     end
-
-    it 'should record the entry station' do
-      subject.top_up(5)
-      expect{subject.touch_in(station)}.to change{subject.entry_station}.to station
-    end
   end
 
   describe '#touch_out' do
@@ -58,7 +53,7 @@ let (:station2) {double :station2}
 
     it 'should create a hash of the journey and store it in the "journeys" variable' do
       subject.touch_out(station2)
-      expect(subject.journeys).to include(station => station2)
+      expect(subject.journeys).to include(:entry_station => station, :exit_station => station2)
     end
 
     it 'should create and store 2 journeys in the journey array when used 2x' do
