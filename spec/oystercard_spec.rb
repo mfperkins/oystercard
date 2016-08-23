@@ -2,16 +2,29 @@
 require 'oystercard.rb'
 
 describe Oystercard do
-  let(:station) {double :station}
+  let(:entry_station) {double :station}
+  let(:exit_station) {double :station}
 
   it 'checks default balance of Oystercard is 0' do
     expect(subject.balance).to eq 0
+  end
+
+  it 'checks that the card has an empty list of journeys' do
+    expect(subject.journeys).to be_empty
   end
 
   it 'adds money to my oyster card' do
     expect{ subject.top_up 1 }.to change{ subject.balance }.by 1
   end
 
+  let(:journey){ {entry: entry_station, exit: exit_station}}
+
+  it 'checks that touching in and out creates one journey' do
+    subject.top_up(20)
+    subject.touch_in(entry_station)
+    subject.touch_out(exit_station)
+    expect(subject.journeys).to include journey
+  end
 
     describe '#top_up' do
 
@@ -24,45 +37,20 @@ describe Oystercard do
       end
     end
 
-  describe '#in_journey?' do
-
-    it 'is initially not in journey' do
-      expect(subject.entry_station).to eq nil
-    end
-
-  end
-
   describe '#touch_in' do
       let(:station) {double :station}
 
     it 'raises an error if minimum balance on oystercard is less than 1' do
       expect{subject.touch_in(station)}.to raise_error 'you have insufficient funds on your oystercard'
     end
-
-    it 'remembers entry station after touch in' do
-      subject.top_up(Oystercard::MIN_FARE)
-      subject.touch_in(station)
-      expect(subject.entry_station).to eq station
-    end
-
-
   end
 
   describe '#touch_out' do
-    it 'resets entry station to nil after touch out' do
-      subject.top_up(Oystercard::MIN_FARE)
-      subject.touch_in(station)
-      subject.touch_out
-      expect(subject.entry_station).to eq nil
-    end
 
     it 'updates balance by deducting fare' do
       subject.top_up(Oystercard::MIN_FARE)
-      subject.touch_in(station)
-      expect{ subject.touch_out }.to change{ subject.balance }.by (-Oystercard::MIN_FARE)
+      subject.touch_in(entry_station)
+      expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by (-Oystercard::MIN_FARE)
     end
   end
-
-
-
 end
