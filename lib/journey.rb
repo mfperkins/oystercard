@@ -17,12 +17,12 @@ class Journey
     @journey[:exit_station] = station
   end
 
+  def is_complete?
+    journey.length == 2
+  end
+
   def fare
-    if journey.length == 2
-      MIN_FARE
-    else
-      PENALTY_FARE
-    end
+    is_complete? ? MIN_FARE : PENALTY_FARE
   end
 
 end

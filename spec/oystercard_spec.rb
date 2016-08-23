@@ -37,6 +37,7 @@ describe Oystercard do
         expect{subject.touch_in(entry_station)}.to raise_error message
       end
     end
+
   end
 
   describe '#touch_out' do

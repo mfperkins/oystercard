@@ -7,17 +7,37 @@ describe Journey do
   let(:oyster)  { double :oyster }
 
   context 'when no entry station' do
-    it 'charges a penalty fare of 6' do
+    before(:each) do
       subject.finish(exit_station)
+    end
+
+    it 'charges a penalty fare of 6' do
       expect(subject.fare).to eq(Journey::PENALTY_FARE)
     end
+
+    it 'returns false to is_complete?' do
+      expect(subject.is_complete?).to be false
+    end
+
   end
 
   context 'when no exit station' do
-    it 'charges a penalty fare of 6' do
+    before(:each) do
       subject.start(entry_station)
+    end
+
+    it 'charges a penalty fare of 6' do
       expect(subject.fare).to eq(Journey::PENALTY_FARE)
     end
+
+    it 'returns false to is_complete?' do
+      expect(subject.is_complete?).to be false
+    end
+
+  end
+
+  describe '#is_complete?' do
+
   end
 
   describe 'when touched in and out' do
@@ -27,12 +47,16 @@ describe Journey do
       subject.finish(exit_station)
     end
 
-      it 'remembers a full journey' do
-        expect(subject.journey).to include(:entry_station => entry_station, :exit_station => exit_station)
-      end
+    it 'returns true to is_complete' do
+      expect(subject.is_complete?).to be true
+    end
 
-      it 'should deduct minimum fare' do
-        expect(subject.fare).to eq(Journey::MIN_FARE)
-      end
-   end
+    it 'remembers a full journey' do
+      expect(subject.journey).to include(:entry_station => entry_station, :exit_station => exit_station)
+    end
+
+    it 'should deduct minimum fare' do
+      expect(subject.fare).to eq(Journey::MIN_FARE)
+    end
+  end
 end
