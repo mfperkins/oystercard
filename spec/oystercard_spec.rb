@@ -3,6 +3,7 @@ require 'oystercard'
 describe Oystercard do
 
   let(:entry_station) { double :entry_station }
+  let(:entry_station2) { double :entry_station2 }
   let(:exit_station) { double :exit_station }
   let(:journey) { double :journey, fare: 1 }
 
@@ -31,7 +32,7 @@ describe Oystercard do
   end
 
   describe '#touch_in' do
-    context 'balance is less than min balance' do
+    context 'balance is less than min fare' do
       it 'raises an error' do
         message = 'balance less than £1 - please top up'
         expect{subject.touch_in(entry_station)}.to raise_error message
@@ -40,7 +41,8 @@ describe Oystercard do
 
   end
 
-  describe '#touch_out' do
+  context 'for cases where there is a complete journey' do
+
     before(:each) do
       subject.top_up(10)
       subject.touch_in(entry_station)
@@ -54,6 +56,31 @@ describe Oystercard do
       subject.touch_out(exit_station)
       expect(subject.journeys).to include(:entry_station => entry_station, :exit_station => exit_station)
     end
+  end
+
+  context 'for cases where there is an exit station but no entry station' do
+
+    before(:each) do
+      subject.top_up(10)
+    end
+
+    it 'will charge you a penalty fare if you touch out' do
+      expect{subject.touch_out(exit_station)}.to change{subject.balance}.by(-6)
+    end
+
+  end
+
+  context 'for cases where there is an entry station but no exit station on the previous journey' do
+
+    before(:each) do
+      subject.top_up(10)
+      subject.touch_in(entry_station)
+    end
+
+    it 'will charge you a penalty fare if you touch in' do
+      expect{subject.touch_in(entry_station2)}.to change{subject.balance}.by(-6)
+    end
+
   end
 
 end

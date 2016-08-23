@@ -3,10 +3,11 @@ class Journey
   MIN_FARE = 1
   PENALTY_FARE = 6
 
-  attr_reader :journey
+  attr_reader :journey, :complete, :entry_station, :exit_station
 
   def initialize
     @journey = {}
+    @complete = is_complete?
   end
 
   def start(station)
