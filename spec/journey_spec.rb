@@ -21,13 +21,11 @@ describe '#finish ' do
     expect(subject.fare).to eq 1
   end
 
-  xit 'ends a journey' do
-
+  it 'knows if a journey is complete' do
+    exect(subject).to be_complete
   end
 
-  xit 'records a journey' do
 
-    end
 
   end
 
