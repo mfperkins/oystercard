@@ -5,8 +5,6 @@ describe Journey do
   subject(:journey) { described_class.new(station: station)}
 
 
-
-
   it 'has an entry station' do
     expect(subject.entry_station).to eq station
   end
@@ -22,10 +20,12 @@ describe '#finish ' do
   end
 
   it 'knows if a journey is complete' do
-    exect(subject).to be_complete
+    expect(subject).to be_complete
   end
 
-
+  it 'it gives a default penalty fare by default' do
+    expect(subject.fare).to Journey::PENALTY_FARE
+  end
 
   end
 

@@ -6,7 +6,10 @@ class Journey
 
   def initialize(station:)
     @entry_station = station
+  end
 
+  def complete?
+    true
   end
 
   def finish(station)
