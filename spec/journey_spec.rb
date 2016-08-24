@@ -16,16 +16,20 @@ describe '#finish ' do
   end
 
   it 'calculates the fare' do
-    expect(subject.fare).to eq 1
+    subject.finish(station)
+    expect(subject.fare).to eq Journey::MIN_FARE
   end
 
   it 'knows if a journey is complete' do
+    subject.finish(station)
     expect(subject).to be_complete
   end
 
-  it 'it gives a default penalty fare by default' do
-    expect(subject.fare).to Journey::PENALTY_FARE
+  it 'it gives a penalty fare by default and when no exit station' do
+    expect(subject.fare).to eq Journey::PENALTY_FARE
   end
+
+
 
   end
 
