@@ -7,6 +7,9 @@ describe JourneyLog do
   let(:Journey_class) {double :Journey_class, new: journey}
   let(:journey) {double :journey, start: nil, finish: nil}
 
+  it 'checks that the card has an empty list of journeys' do
+    expect(subject.journeys).to be_empty
+  end
 
 xit 'send station to journeylog' do
   subject.start(station)
