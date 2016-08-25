@@ -19,14 +19,14 @@ class JourneyLog
     journeys[-1][:exit_station] = station
   end
 
+  def endjourney
+    @thisjourney = nil
+  end
+
   private
 
-  def current_journey(new_journey = Journey.new)
-    if thisjourney == nil
-      @thisjourney = new_journey
-    else
-      thisjourney
-    end
+  def current_journey
+    thisjourney || @thisjourney = Journey.new
   end
 
 end
