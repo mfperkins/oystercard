@@ -48,9 +48,9 @@ describe Oystercard do
       expect{subject.touch_in(station)}.to raise_error 'you have insufficient funds on your oystercard'
     end
 
-    xit 'send station to journey' do
+    it 'send station to journey' do
       subject.top_up(10)
-      subject.touch_in(station)
+      subject.touch_in(station, journey2)
       expect(journey2).to have_received(:start).with(station)
     end
 

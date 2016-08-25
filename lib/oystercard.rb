@@ -12,13 +12,13 @@ class Oystercard
     @currentjourney = nil
   end
 
-  def touch_in(station)
+  def touch_in(station, newjourney = Journey.new)
     fail 'you have insufficient funds on your oystercard' if balance < Journey::MIN_FARE
     if currentjourney != nil
       deduct(currentjourney.fare)
       @journey[:entry] = station
     end
-    @currentjourney = Journey.new
+    @currentjourney = newjourney
     @journeys[:entry] = station
     currentjourney.start(station)
   end
