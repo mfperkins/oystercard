@@ -7,26 +7,37 @@ describe JourneyLog do
   let(:Journey_class) {double :Journey_class, new: journey}
   let(:journey) {double :journey, start: nil, finish: nil}
 
-  it 'checks that the card has an empty list of journeys' do
-    expect(subject.journeys).to be_empty
+  describe '#initialize' do
+
+    it 'checks that the card has an empty list of journeys' do
+      expect(subject.journeys).to be_empty
+    end
+
   end
 
-xit 'send station to journeylog' do
-  subject.start(station)
-  expect(journey).to have_received(:start).with(station)
-end
+  describe "#start" do
 
-xit 'sends station to Journey' do
-  subject.start(station)
-  subject.finish(station)
-  expect(journey).to have_received(:finish).with(station)
-end
+    xit 'send station to journey' do
+      subject.start(station)
+      expect(journey).to have_received(:start).with(station)
+    end
 
-it 'checks that touching in and out creates one journey' do
-  subject.start(station)
-  subject.finish(station2)
-  expect(subject.journeys).to include(entry_station: station, exit_station: station2)
-end
+  end
 
+  xit 'sends station to Journey' do
+    subject.start(station)
+    subject.finish(station)
+    expect(journey).to have_received(:finish).with(station)
+  end
+
+  context "when there's a complete journey" do
+
+    it ' touching in and out creates one journey' do
+      subject.start(station)
+      subject.finish(station2)
+      expect(subject.journeys).to include(entry_station: station, exit_station: station2)
+    end
+
+ end
 
 end
