@@ -16,8 +16,8 @@ class Journeylog
 
   def finish(station)
     journey.finish_journey(station)
-    @journeys << {:entry_station => journey.entry_station , :exit_station => journey.exit_station}
-    @last_fare = @journey.fare
+    journeys << journey.journey
+    @last_fare = journey.fare
     @journey = nil
   end
 
