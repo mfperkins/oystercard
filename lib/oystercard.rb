@@ -21,8 +21,7 @@ class Oystercard
   end
 
   def touch_out(station)
-    journeylog.finish(station)
-    deduct(journeylog.thisjourney.fare)
+    deduct(journeylog.finish(station))
   end
 
   def top_up(value)

@@ -10,6 +10,9 @@ class JourneyLog
   end
 
   def start(station)
+    if current_journey != nil
+      @thisjourney = nil
+    end
     current_journey.start(station)
     @journeys << {entry_station: station, exit_station: nil}
   end
@@ -17,10 +20,9 @@ class JourneyLog
   def finish(station)
     current_journey.finish(station)
     journeys[-1][:exit_station] = station
-  end
-
-  def endjourney
+    journey_fare = current_journey.fare
     @thisjourney = nil
+    journey_fare
   end
 
   private
