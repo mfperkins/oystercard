@@ -2,9 +2,10 @@ require 'oystercard'
 
 describe Oystercard do
 
-  subject(:empty_card) { described_class.new }
-  subject(:card) { described_class.new }
+  subject(:empty_card) { described_class.new}
+  subject(:card) { described_class.new}
 
+  let(:journeylog) {double :journeylog, outstanding_fare: 6}
   let(:entry_station) { double :station }
   let(:exit_station) { double :station }
 

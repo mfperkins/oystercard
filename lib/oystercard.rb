@@ -8,7 +8,7 @@ class Oystercard
 MAXIMUM_LIMIT = 90
 MINIMUM_LIMIT = 1
 
-attr_reader :balance
+attr_reader :balance, :journeylog
 
   def initialize(journeylog = Journeylog.new)
     @balance = 0
@@ -23,6 +23,7 @@ attr_reader :balance
   def touch_in(entry_station)
     fail "Insufficient funds. Please top up." if balance < MINIMUM_LIMIT
     @journeylog.start(entry_station)
+    deduct(journeylog.outstanding_fare)
   end
 
   def touch_out(exit_station)
