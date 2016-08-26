@@ -35,21 +35,12 @@ describe Oystercard do
       expect{ empty_card.touch_in(entry_station) }.to raise_error msg
     end
 
-    it 'initiates a journey on touching in' do
-      expect(card.touch_in(entry_station)).to eq card.journey
-    end
-
     context 'touching in when previous journey is incomplete' do
       it 'charges penalty fare to the balance' do
         card.touch_in(entry_station)
         expect{card.touch_in(entry_station)}.to change {card.balance}.by(-6)
       end
 
-      it 'add a incomplete journey to journey history' do
-        card.touch_in(entry_station)
-        card.touch_in(entry_station)
-        expect(card.journeys).to include({ :entry_station => entry_station , :exit_station => nil })
-      end
     end
 
   end
@@ -66,20 +57,11 @@ describe Oystercard do
       expect { card.touch_out(exit_station)}.to change { card.balance }.by( -Oystercard::MINIMUM_LIMIT)
     end
 
-
-    it 'forgets entry_station on touch out' do
-      expect(card.journey).to eq nil
-    end
-
     context 'touching out when card has not been touched in' do
       it 'charges a penalty fare to the balance' do
         expect{card.touch_out(exit_station)}.to change {card.balance}.by(-6)
       end
 
-      it 'records incomplete journey in journey history' do
-        card.touch_out(exit_station)
-        expect(card.journeys).to include({ :entry_station => nil , :exit_station => exit_station })
-      end
     end
 
   end
